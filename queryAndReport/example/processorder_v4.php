@@ -51,9 +51,11 @@ try {
     $pass = '';
     $host = '127.0.0.1';
     $db_name = 'bobs';
+    $port = 3000;
 
     // set up DSN
-    $dsn = "mysql:host=$host;dbname=$db_name";
+    $dsn = "mysql:host=$host;dbname=$db_name; port=$port";
+
 
     $db = new PDO($dsn, $user, $pass);
 
@@ -66,6 +68,18 @@ try {
     // Use this variable for the order date/time to be inserted into Mysql:
     $order_datetime = date("Y-m-d H:i:s");
     // YOUR CODE HERE
+    $query = "INSERT INTO orders VALUES (:OrderNum, :Date, :TireQty, :OilQty, :SparkQty, :HowToFindBobId, :Notes)";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':OrderNum', $orderNum);
+        $stmt->bindParam(':Date', $order_datetime);
+        $stmt->bindParam(':TireQty', $tireqty);
+        $stmt->bindParam(':OilQty', $oilqty);
+        $stmt->bindParam(':SparkQty', $sparkqty);
+        $stmt->bindParam(':HowToFindBobId', $how_find_bob);
+        $stmt->bindParam(':Notes', $notes);
+    
+        $stmt->execute();
+
 
     // show the user the order results
     // for info on $db->lastInsertId() see http://php.net/manual/en/pdo.lastinsertid.php
